@@ -18,17 +18,53 @@ var pathDirUnarc:String = ""
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
-
+    @IBOutlet weak var menuHistory: NSMenuItem!
+    var viewController: ViewController!
+    
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         Unarchive().cleanFiles()
+        createHistoryMenu()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
         Unarchive().cleanFiles()
     }
+    
+    func applicationShouldTerminateAfterLastWindowClosed (_ theApplication: NSApplication) -> Bool {
+            Swift.print("App close.")
+            return true
+        }
+    
+    func windowShouldClose(_ sender: Any) {
+        NSApplication.shared.terminate(self)
+        }
 
-
+    func createHistoryMenu() {
+        let menuForParent = NSMenu()
+        let strArryHistory = UserDefaults.standard.array(forKey: "history")
+        //ここでnilを弾かないと初期値が履歴が無い場合にエラーが出るので対処。
+        if(strArryHistory == nil){
+            menuHistory.submenu = menuForParent
+            return
+        }
+        for strHistory in strArryHistory! {
+            let tempStrHitory:NSString = (strHistory as? NSString)!
+            let strHistoryFilename:NSString = tempStrHitory.components(separatedBy: "/")[tempStrHitory.components(separatedBy: "/").count-1] as NSString
+            Swift.print(strHistoryFilename)
+            let menuItem = NSMenuItem(title: strHistory as! String, action: #selector(callInitManga(sender:)), keyEquivalent: "")
+            menuForParent.addItem(menuItem)
+        }
+        menuHistory.submenu = menuForParent
+    }
+    
+    @objc func callInitManga(sender: NSMenuItem) {
+        let pathFile = sender.title
+        Swift.print(pathFile)
+        let appDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.viewController.dragDropManga(pathFile: pathFile as NSString)
+      }
+    
     @IBAction func menuOpenRight(_ sender: NSMenuItem) {
         if (sender.state == .on) {
             //sender.state = .off
@@ -37,6 +73,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             //sender.state = .on
             openRight = true
         }
+        let appDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.viewController.printManga()
         Swift.print(openRight)
     }
     
@@ -76,7 +114,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             //sender.state = .on
             doublePageSpread = true
         }
+        let appDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.viewController.printManga()
         Swift.print(doublePageSpread)
     }
 
+    @IBAction func actionMenuFile(_ sender: NSMenuItem) {
+        Swift.print("file file file")
+    }
+    
+    @IBAction func removeRecent(_ sender: NSMenuItem) {
+        let alert = NSAlert()
+        alert.messageText = "Remove Recent All History"
+        alert.addButton(withTitle: "Remove")
+        alert.addButton(withTitle: "Cancle")
+        let ret = alert.runModal()
+        switch ret {
+            case .alertFirstButtonReturn:
+                UserDefaults.standard.removeObject(forKey: "history")
+                let menuForParent = NSMenu()
+                menuHistory.submenu = menuForParent
+                print("Reset")
+            case .alertSecondButtonReturn:
+                print("cancle")
+            default: break
+        }
+    }
 }

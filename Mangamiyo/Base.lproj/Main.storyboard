@@ -59,16 +59,19 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="File" id="bib-Uj-vzu">
                                     <items>
-                                        <menuItem title="New" keyEquivalent="n" id="Was-JA-tGl">
-                                            <connections>
-                                                <action selector="newDocument:" target="Ady-hI-5gd" id="4Si-XN-c54"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                             <connections>
                                                 <action selector="openDocument:" target="Ady-hI-5gd" id="bVn-NM-KNZ"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="0Lj-Je-wYo"/>
+                                        <menuItem title="Remove Recent" id="oaB-k2-TpD">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="removeRecent:" target="Voe-Tx-rLC" id="Cui-le-4jm"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
                                         <menuItem title="Open Recent" id="tXI-mr-wws">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="oas-Oc-fiZ">
@@ -82,41 +85,11 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                                        <menuItem title="Close" keyEquivalent="w" id="DVo-aG-piG">
-                                            <connections>
-                                                <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Save…" keyEquivalent="s" id="pxx-59-PXV">
-                                            <connections>
-                                                <action selector="saveDocument:" target="Ady-hI-5gd" id="teZ-XB-qJY"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Save As…" keyEquivalent="S" id="Bw7-FT-i3A">
-                                            <connections>
-                                                <action selector="saveDocumentAs:" target="Ady-hI-5gd" id="mDf-zr-I0C"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Revert to Saved" keyEquivalent="r" id="KaW-ft-85H">
-                                            <connections>
-                                                <action selector="revertDocumentToSaved:" target="Ady-hI-5gd" id="iJ3-Pv-kwq"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
-                                        <menuItem title="Page Setup…" keyEquivalent="P" id="qIS-W8-SiK">
-                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
-                                            <connections>
-                                                <action selector="runPageLayout:" target="Ady-hI-5gd" id="Din-rz-gC5"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Print…" keyEquivalent="p" id="aTl-1u-JFS">
-                                            <connections>
-                                                <action selector="print:" target="Ady-hI-5gd" id="qaZ-4w-aoO"/>
-                                            </connections>
-                                        </menuItem>
                                     </items>
                                 </menu>
+                                <connections>
+                                    <action selector="actionMenuFile:" target="Voe-Tx-rLC" id="uWi-3m-QKf"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Views Style" id="jxT-CU-nIS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -192,7 +165,11 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Mangamiyo" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Mangamiyo" customModuleProvider="target">
+                    <connections>
+                        <outlet property="menuHistory" destination="tXI-mr-wws" id="mZa-cu-ean"/>
+                    </connections>
+                </customObject>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <userDefaultsController representsSharedInstance="YES" id="i48-7w-5sO"/>
@@ -203,7 +180,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Mangamiyo" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" title="Mangamiyo" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titlebarAppearsTransparent="YES" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
@@ -272,7 +249,7 @@
                                     <constraint firstAttribute="width" constant="21" id="oS2-O4-wAt"/>
                                 </constraints>
                                 <textFieldCell key="cell" controlSize="small" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="border" focusRingType="none" alignment="left" drawsBackground="YES" id="zrf-vM-MGz">
-                                    <font key="font" metaFont="system" size="9"/>
+                                    <font key="font" metaFont="miniSystem"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
@@ -280,6 +257,17 @@
                                     <action selector="strShowTimer:" target="XfG-lQ-9wD" id="dLI-Ga-rEv"/>
                                     <binding destination="Iwc-ew-SHa" name="value" keyPath="values.strShowTime" id="urk-uI-0kb"/>
                                 </connections>
+                            </textField>
+                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RDK-M8-Oyk">
+                                <rect key="frame" x="298" y="251" width="182" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="78" id="BQ3-O2-GXI"/>
+                                </constraints>
+                                <textFieldCell key="cell" controlSize="small" lineBreakMode="truncatingTail" allowsUndo="NO" focusRingType="none" baseWritingDirection="leftToRight" alignment="right" title=" " id="m5B-rl-rfA">
+                                    <font key="font" metaFont="smallSystem"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
                             </textField>
                         </subviews>
                         <constraints>
@@ -289,6 +277,8 @@
                             <constraint firstAttribute="trailing" secondItem="gos-qh-InI" secondAttribute="trailing" constant="10" id="7ab-Ce-QTu"/>
                             <constraint firstAttribute="bottom" secondItem="gos-qh-InI" secondAttribute="bottom" id="85z-dZ-PWh"/>
                             <constraint firstItem="gos-qh-InI" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="50" id="C09-Dn-FDX"/>
+                            <constraint firstAttribute="trailing" secondItem="RDK-M8-Oyk" secondAttribute="trailing" constant="6" id="HMe-Nq-2vY"/>
+                            <constraint firstItem="RDK-M8-Oyk" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="5" id="Ioe-PH-P4j"/>
                             <constraint firstItem="gos-qh-InI" firstAttribute="leading" secondItem="ycS-Y7-Zqt" secondAttribute="trailing" constant="26" id="LhQ-7j-N1N"/>
                             <constraint firstItem="LwT-yl-y99" firstAttribute="baseline" secondItem="gos-qh-InI" secondAttribute="baseline" constant="-7" id="LwM-0j-5Wt"/>
                             <constraint firstAttribute="trailing" secondItem="wBA-Ut-8x0" secondAttribute="trailing" id="NZg-fq-XDy"/>
@@ -310,6 +300,7 @@
                         <outlet property="imageViewSub1" destination="dHL-fz-Cmn" id="2nr-vu-v4A"/>
                         <outlet property="imageViewSub2" destination="aMZ-rC-beH" id="H3p-c9-N9w"/>
                         <outlet property="pageSlider" destination="gos-qh-InI" id="ecs-TA-fuA"/>
+                        <outlet property="textFileName" destination="RDK-M8-Oyk" id="wOt-KY-9Z1"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

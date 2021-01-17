@@ -166,6 +166,9 @@ public final class ADragDropView: NSView {
         delegate?.delegateClickRight(self)
         return true
     }
+    public override func performKeyEquivalent(with event: NSEvent) -> Bool {
+           return true
+       }
 }
 
 public protocol ADragDropViewDelegate: class {

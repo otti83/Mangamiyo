@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		2C0A914625AB0BAC00FAA108 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 2C0A914525AB0BAC00FAA108 /* AppIcon.appiconset */; };
 		2C0ECCFA25A9CAAB00C974B8 /* PDFtoImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0ECCF925A9CAAB00C974B8 /* PDFtoImage.swift */; };
-		2C0ECCFC25A9CB1A00C974B8 /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0ECCFB25A9CB1A00C974B8 /* Quartz.framework */; };
+		2C7658E425AB13B000866B7A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0ECCFB25A9CB1A00C974B8 /* Quartz.framework */; };
 		2C9C192C25A8952700C3AD88 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9C192B25A8952700C3AD88 /* XADMaster.framework */; };
 		2C9C192D25A8952700C3AD88 /* XADMaster.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9C192B25A8952700C3AD88 /* XADMaster.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2CD1FE3625A5F609006E9516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1FE3525A5F609006E9516 /* AppDelegate.swift */; };
@@ -58,8 +58,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C0ECCFC25A9CB1A00C974B8 /* Quartz.framework in Frameworks */,
 				2C9C192C25A8952700C3AD88 /* XADMaster.framework in Frameworks */,
+				2C7658E425AB13B000866B7A /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +343,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = otti.Mangamiyo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mangamiyo-Bridging-Header.h";
@@ -371,6 +372,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = otti.Mangamiyo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mangamiyo-Bridging-Header.h";

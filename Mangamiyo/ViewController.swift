@@ -14,16 +14,20 @@ class ViewController: NSViewController {
     @IBOutlet weak var imageViewSub2: NSImageView!
     @IBOutlet weak var pageSlider: NSSlider!
     @IBOutlet weak var buttonSlideshow: NSButton!
-    
+    @IBOutlet weak var textFileName: NSTextField!
     
     var timerSlide = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let appDelegate:AppDelegate = NSApplication.shared.delegate as! AppDelegate
+        appDelegate.viewController = self
+        
         NSEvent.addLocalMonitorForEvents(matching: .keyDown) { (event) -> NSEvent? in
             self.keyDown(with: event)
             return event
         }
+        //UserDefaultsを利用して初期化や解凍先の設定。
         let DocumentsPath = NSHomeDirectory() + "/tmp/Mangamiiyo/works/"
         pathDirUnarc = UserDefaults.standard.string(forKey: "unarchPath") ?? DocumentsPath
         Swift.print(DocumentsPath, pathDirUnarc)
@@ -34,18 +38,24 @@ class ViewController: NSViewController {
         Swift.print(UserDefaults.standard.double(forKey: "strShowTime"), UserDefaults.standard.bool(forKey: "openRight"), UserDefaults.standard.bool(forKey: "doublePageSpread"))
         
         // Do any additional setup after loading the view.
+        //ドラッグアンドドロップ可能な拡張子の設定。
         dragDropView.acceptedFileExtensions = ["zip", "rar", "pdf"]
         dragDropView.delegate = self
     }
 
-    override func keyDown(with event: NSEvent) {
-        Swift.print(event.keyCode)
+    //キーボードのデリゲート処理
+    //なぜかKeyDownだと二重カウントされるため、KeyUpで対処
+    //beep音が出てしまったので別で対処。
+    override func keyUp(with event: NSEvent) {
         if (openRight) {
+            Swift.print(event.keyCode)
             switch event.keyCode{
                 case 123:
                     self.fowardPage()
+                    break
                 case 124:
                     self.backPage()
+                    break
                 default:
                     Swift.print(event.keyCode)
             }
@@ -53,8 +63,10 @@ class ViewController: NSViewController {
             switch event.keyCode{
                 case 124:
                     self.fowardPage()
+                    break
                 case 123:
                     self.backPage()
+                    break
                 default:
                     Swift.print(event.keyCode)
             }
@@ -66,7 +78,7 @@ class ViewController: NSViewController {
         // Update the view, if already loaded.
         }
     }
-    
+
     @IBAction func actionPageSlider(_ sender: NSSlider) {
         if(openRight) {
             mangaIndex = -pageSlider.integerValue
@@ -93,6 +105,10 @@ class ViewController: NSViewController {
 }
 
 extension ViewController: ADragDropViewDelegate {
+override var acceptsFirstResponder: Bool {
+        return true
+    }
+    
     func delegateClickLeft(_ dragDropView: ADragDropView) {
         self.fowardPage()
     }
@@ -101,9 +117,50 @@ extension ViewController: ADragDropViewDelegate {
         self.backPage()
     }
     
+    //ドラッグアンドドロップされた際にデリゲート処理するメソッド。
+    //実際の処理は中で呼びされるdragDropManga()で対応
     func dragDropView(_ dragDropView: ADragDropView, droppedFileWithURL URL: URL) {
-        var timerList = Timer()
+        dragDropManga(pathFile: URL.path.removingPercentEncoding! as NSString)
+    }
+    
+    func dragDropView(_ dragDropView: ADragDropView, droppedFilesWithURLs URLs: [URL]) {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = "Please drop only one file"
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+    }
 
+    //ファイルの履歴管理のためUseDefaults(forKey: "history")にファイルPATHを追加する。
+    //同じファイルPATHが格納されている場合は処理させずreturnで終了する。
+    func manageUDHistory(pathFile:NSString) {
+        let defaults = UserDefaults.standard
+        var strArrHistory = defaults.array(forKey: "history")
+        if (strArrHistory == nil) {
+            strArrHistory = []
+        }
+        for strHistory in strArrHistory! {
+            if((strHistory as! NSString).isEqual(to: pathFile)) {
+                Swift.print("Exist path.")
+                return
+            }
+        }
+        strArrHistory?.append(pathFile)
+        defaults.set(strArrHistory, forKey:"history")
+        strArrHistory = defaults.array(forKey: "history")
+        //Swift.print(strArrHistory)
+        if let myDelegate = NSApplication.shared.delegate as? AppDelegate {
+            myDelegate.createHistoryMenu()
+        }
+    }
+    
+    //ファイルをドラッグアンドドロップされた際に呼びされるメソッド
+    //解凍処理のスレッド管理を行っている。
+    //合わせて解凍中はファイルの列挙のためにTimer機能でファイル一覧のグローバル変数への格納を逐次実施する。
+    //これがファイル一覧のメソッド→Unarchive().listedFiles()
+    func dragDropManga(pathFile:NSString) {
+        var timerList = Timer()
+        manageUDHistory(pathFile: pathFile)
         if (doublePageSpread) {
             mangaIndex = 1
         }else{
@@ -120,7 +177,7 @@ extension ViewController: ADragDropViewDelegate {
         })
         
         queueUnarch.async(group: groupUnarch) {
-            Unarchive().selectUnrchive(pathFile: URL.path.removingPercentEncoding!)
+            Unarchive().selectUnrchive(pathFile: pathFile as String)
             DispatchQueue.main.async {
             }
         }
@@ -134,24 +191,32 @@ extension ViewController: ADragDropViewDelegate {
         }
     }
     
-    func dragDropView(_ dragDropView: ADragDropView, droppedFilesWithURLs URLs: [URL]) {
-        let alert = NSAlert()
-        alert.alertStyle = .warning
-        alert.messageText = "Please drop only one file"
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
-    }
-
+    //ファイル一覧のグローバル変数（mangaFiles）から余計なファイルを取り除き、
+    //最終的なファイル一覧のグローバル変数を生成する（pathManagaFiles）
     func initManga (){
         pathManagaFiles = mangaFiles.filter {($0.contains(".jpg") || $0.contains(".jpeg") || $0.contains(".gif") || $0.contains(".png") || $0.contains(".bmp")) && !$0.contains("__MACOSX/")}
+        Swift.print("Befora sort: ", pathManagaFiles)
+        pathManagaFiles = pathManagaFiles.sorted{$0.localizedStandardCompare($1) == ComparisonResult.orderedAscending
+        }
+        Swift.print("After sort: ", pathManagaFiles)
         var i = 0;
         for path in pathManagaFiles{
             pathManagaFiles[i] = Unarchive().tempUnarc.appending(path)
             i += 1
         }
+        imageView.image = nil
+        imageViewSub1.image = nil
+        imageViewSub2.image = nil
         printManga()
     }
     
+    //ファイル一覧のグローバル変数（pathManagaFiles）から実際にページを表示する。
+    //オプション表示の処理も行う。
+    //右開き処理の関して　例）1-5ページのファイルの場合
+    //　　　右開き True：スライダーを-5から0とする
+    //　　　右開き Fales：スライダーを0から5とする
+    //見開き True：表示するViewを１ページ用のimageViewから、
+    //　　　　　　　見開き用のView（imageViewSub1,imageViewSub2）に変更する。
     func printManga() {
         pageSlider.numberOfTickMarks=pathManagaFiles.count
         if(openRight) {
