@@ -9,15 +9,20 @@ import Foundation
 
 //ファイルの解凍、解凍先ファイルを管理するクラス
 class Unarchive {
+    init() {
+        Swift.print("Unarchive init.")
+    }
+    
+    deinit {
+        Swift.print("Unarchive deinit.")
+    }
     //解凍先のPATH。
     //ただし、メインメニューからの指定とドキュメントフォルダとして初期化される
     //var tempUnarc:String = "/Volumes/RAMDisk/dist/"
-    var tempUnarc:String = pathDirUnarc
-    
+    //var tempUnarc:String = pathDirUnarc
     //ドラッグアンドドロップされた後に呼び出される
     func selectUnrchive(pathFile:String) {
         self.cleanFiles()
-
         //Swift.print("zip path :" + pathFile);
         let strExt = String(pathFile.suffix(3));
         switch strExt {
@@ -27,7 +32,7 @@ class Unarchive {
             //pdfからの画像化を自前で実装しようとした。
             //しかし動かないしXADMasterで対応できたのでコメントアウト
             //let sourceURL = URL(string: pathFile)!
-            //let destinationURL = URL(fileURLWithPath: tempUnarc)
+            //let destinationURL = URL(fileURLWithPath: pathDirUnarchcurrent)
             //let _ = convertPDF(at: sourceURL, to: destinationURL, fileType: .jpg, dpi: 200)
         default:
             self.unarchiveXDA(pathFile: pathFile)
@@ -49,9 +54,12 @@ class Unarchive {
         if(xun == nil){
             return
         }
-        var arrName:[[Int]] = []
+        
         xun?.setNameEncoding(nsEncoding)
-        //xun?.extract(to: tempUnarc, subArchives: true)
+        //xun?.extract(to: pathDirUnarcCurrent, subArchives: true)
+        
+        /*
+        var arrName:[[Int]] = []
         //まずはアーカイブ内のファイル名とインデックスを取り出し配列化する。
         for i in 0 ..< xun!.numberOfEntries() {
             //Swift.print(xun!.size(ofEntry: i))
@@ -62,15 +70,39 @@ class Unarchive {
                 arrName.append([Int(i), numName])
             }
         }
-        //Swift.print(arrName)
+        */
         
+        var arrName:[[String]] = []
+        var arrNameIndex:[Int] = []
+        xun?.setNameEncoding(nsEncoding)
+        //まずはアーカイブ内のファイル名とインデックスを取り出し配列化する。
+        for i in 0 ..< xun!.numberOfEntries() {
+            let strName = xun!.name(ofEntry: i)
+            if (strName?.count != 0){
+                arrName.append([String(i), String(strName!)])
+            }
+        }
+
         //ファイル名をソート。合わせてそれに紐づくインデックスもソートされる。
         //ソート後、ファイル名順でアーカイブのインデックスを指定して解凍。
-        arrName.sort{$0[1] < $1[1]}
-        for i in 0 ..< arrName.count {
-            xun!.extractEntry(Int32(arrName[i][0]), to: tempUnarc)
-            //Swift.print(xun!.name(ofEntry: Int32(arrName[i][0])) ?? "null")
+        arrName = arrName.sorted{$0[1].localizedStandardCompare($1[1]) == ComparisonResult.orderedAscending
         }
+        //Swift.print(arrName)
+        for i in 0 ..< xun!.numberOfEntries() {
+            arrNameIndex.append(Int(arrName[Int(i)][0])!)
+        }
+        Swift.print("actually index :", arrNameIndex)
+        /*
+        if (arrName.count > 10) {
+            for i in 0 ..< 9 {
+                xun!.extractEntry(Int32(arrName[i][0])!, to: pathDirUnarch)
+                //Swift.print(xun!.name(ofEntry: Int32(arrName[i][0])) ?? "null")
+            }
+        }
+ */
+        
+        //xun?.extract(to: pathDirUnarch, subArchives: true)
+        xun?.extractEntriesActually(arrNameIndex, to: pathDirUnarch, subArchives: true)
     }
     
     //解凍先のディレクトリ内のファイルを列挙する。
@@ -78,7 +110,8 @@ class Unarchive {
     func listedFiles(){
         let fileManager = FileManager.default
         do {
-            mangaFiles = try fileManager.subpathsOfDirectory(atPath: self.tempUnarc)
+            Swift.print("pathDirUnarchCurrent Path: ", pathDirUnarch)
+            mangaFiles = try fileManager.subpathsOfDirectory(atPath: pathDirUnarch)
         } catch {
         }
     }
@@ -87,7 +120,7 @@ class Unarchive {
     //アプリ起動時、終了時、新しいファイル読み込み時に実行される。
     func cleanFiles(){
         do {
-            try FileManager.default.removeItem(atPath: Unarchive().tempUnarc)
+            try FileManager.default.removeItem(atPath: pathDirUnarch)
         } catch {
         }
     }

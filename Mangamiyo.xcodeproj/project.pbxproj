@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C0A914625AB0BAC00FAA108 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 2C0A914525AB0BAC00FAA108 /* AppIcon.appiconset */; };
 		2C0ECCFA25A9CAAB00C974B8 /* PDFtoImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C0ECCF925A9CAAB00C974B8 /* PDFtoImage.swift */; };
+		2C676ACE25C1BC8B0077FF87 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C676AA725C1B6EC0077FF87 /* XADMaster.framework */; };
+		2C676ACF25C1BC8B0077FF87 /* XADMaster.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C676AA725C1B6EC0077FF87 /* XADMaster.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2C7658E425AB13B000866B7A /* Quartz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0ECCFB25A9CB1A00C974B8 /* Quartz.framework */; };
-		2C9C192C25A8952700C3AD88 /* XADMaster.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9C192B25A8952700C3AD88 /* XADMaster.framework */; };
-		2C9C192D25A8952700C3AD88 /* XADMaster.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2C9C192B25A8952700C3AD88 /* XADMaster.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2CA6B1BD25D456820027CD34 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CA6B1BC25D456820027CD34 /* Images.xcassets */; };
+		2CA6B1BF25D4568C0027CD34 /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 2CA6B1BE25D4568C0027CD34 /* AppIcon.appiconset */; };
 		2CD1FE3625A5F609006E9516 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1FE3525A5F609006E9516 /* AppDelegate.swift */; };
 		2CD1FE3825A5F609006E9516 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1FE3725A5F609006E9516 /* ViewController.swift */; };
-		2CD1FE3A25A5F60A006E9516 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CD1FE3925A5F60A006E9516 /* Assets.xcassets */; };
 		2CD1FE3D25A5F60A006E9516 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CD1FE3B25A5F60A006E9516 /* Main.storyboard */; };
 		2CD1FE4F25A5F6D1006E9516 /* ADragDropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1FE4E25A5F6D1006E9516 /* ADragDropView.swift */; };
 		2CD1FE5225A5F6D6006E9516 /* NSDraggingInfo+FilePathURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD1FE5125A5F6D6006E9516 /* NSDraggingInfo+FilePathURL.swift */; };
@@ -22,13 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		2C9C192E25A8952700C3AD88 /* Embed Frameworks */ = {
+		2C676AD025C1BC8B0077FF87 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				2C9C192D25A8952700C3AD88 /* XADMaster.framework in Embed Frameworks */,
+				2C676ACF25C1BC8B0077FF87 /* XADMaster.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,15 +36,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		2C0A914525AB0BAC00FAA108 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		2C0ECCF925A9CAAB00C974B8 /* PDFtoImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFtoImage.swift; sourceTree = "<group>"; };
 		2C0ECCFB25A9CB1A00C974B8 /* Quartz.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Quartz.framework; path = System/Library/Frameworks/Quartz.framework; sourceTree = SDKROOT; };
+		2C676AA725C1B6EC0077FF87 /* XADMaster.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XADMaster.framework; sourceTree = "<group>"; };
 		2C9C192825A890F700C3AD88 /* Mangamiyo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mangamiyo-Bridging-Header.h"; sourceTree = "<group>"; };
-		2C9C192B25A8952700C3AD88 /* XADMaster.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XADMaster.framework; path = Carthage/Build/XADMaster.framework; sourceTree = "<group>"; };
+		2CA6B1BC25D456820027CD34 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		2CA6B1BE25D4568C0027CD34 /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		2CD1FE3225A5F609006E9516 /* Mangamiyo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mangamiyo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CD1FE3525A5F609006E9516 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CD1FE3725A5F609006E9516 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		2CD1FE3925A5F60A006E9516 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2CD1FE3C25A5F60A006E9516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2CD1FE3E25A5F60A006E9516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2CD1FE3F25A5F60A006E9516 /* Mangamiyo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mangamiyo.entitlements; sourceTree = "<group>"; };
@@ -58,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C9C192C25A8952700C3AD88 /* XADMaster.framework in Frameworks */,
+				2C676ACE25C1BC8B0077FF87 /* XADMaster.framework in Frameworks */,
 				2C7658E425AB13B000866B7A /* Quartz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -89,15 +89,15 @@
 			children = (
 				2CD1FE3525A5F609006E9516 /* AppDelegate.swift */,
 				2CD1FE3725A5F609006E9516 /* ViewController.swift */,
-				2CD1FE3925A5F60A006E9516 /* Assets.xcassets */,
-				2C0A914525AB0BAC00FAA108 /* AppIcon.appiconset */,
 				2CD1FE3B25A5F60A006E9516 /* Main.storyboard */,
 				2CD1FE3E25A5F60A006E9516 /* Info.plist */,
+				2CA6B1BE25D4568C0027CD34 /* AppIcon.appiconset */,
 				2CD1FE3F25A5F60A006E9516 /* Mangamiyo.entitlements */,
 				2CD1FE4E25A5F6D1006E9516 /* ADragDropView.swift */,
 				2CD1FE5125A5F6D6006E9516 /* NSDraggingInfo+FilePathURL.swift */,
 				2CD1FE6E25A5FC54006E9516 /* Unarchive.swift */,
 				2C0ECCF925A9CAAB00C974B8 /* PDFtoImage.swift */,
+				2CA6B1BC25D456820027CD34 /* Images.xcassets */,
 			);
 			path = Mangamiyo;
 			sourceTree = "<group>";
@@ -105,8 +105,8 @@
 		2CD1FE5425A5F9D0006E9516 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C676AA725C1B6EC0077FF87 /* XADMaster.framework */,
 				2C0ECCFB25A9CB1A00C974B8 /* Quartz.framework */,
-				2C9C192B25A8952700C3AD88 /* XADMaster.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -121,7 +121,7 @@
 				2CD1FE2E25A5F609006E9516 /* Sources */,
 				2CD1FE2F25A5F609006E9516 /* Frameworks */,
 				2CD1FE3025A5F609006E9516 /* Resources */,
-				2C9C192E25A8952700C3AD88 /* Embed Frameworks */,
+				2C676AD025C1BC8B0077FF87 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,9 +172,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2CD1FE3A25A5F60A006E9516 /* Assets.xcassets in Resources */,
-				2C0A914625AB0BAC00FAA108 /* AppIcon.appiconset in Resources */,
 				2CD1FE3D25A5F60A006E9516 /* Main.storyboard in Resources */,
+				2CA6B1BF25D4568C0027CD34 /* AppIcon.appiconset in Resources */,
+				2CA6B1BD25D456820027CD34 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,7 +343,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = otti.Mangamiyo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mangamiyo-Bridging-Header.h";
@@ -372,7 +372,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = otti.Mangamiyo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Mangamiyo-Bridging-Header.h";

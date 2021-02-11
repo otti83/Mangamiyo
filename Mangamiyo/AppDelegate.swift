@@ -14,11 +14,16 @@ var numShowTimer:Double = 5.0
 var openRight:Bool = false
 var doublePageSpread:Bool = false
 let numDirMonitor:Double = 0.5
-var pathDirUnarc:String = ""
+var pathDirUnarch:String = ""
+//var pathDirUnarcCurrent:String = ""
+//var instanceUnarch:Unarchive?
+//var groupUnarch:DispatchGroup?
+//var queueUnarch:DispatchQueue?
 
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet weak var menuHistory: NSMenuItem!
+    @IBOutlet weak var menuFolderFiles: NSMenuItem!
     var viewController: ViewController!
     
     func applicationDidFinishLaunching(_ aNotification: Notification) {
@@ -49,15 +54,56 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         for strHistory in strArryHistory! {
-            let tempStrHitory:NSString = (strHistory as? NSString)!
-            let strHistoryFilename:NSString = tempStrHitory.components(separatedBy: "/")[tempStrHitory.components(separatedBy: "/").count-1] as NSString
-            Swift.print(strHistoryFilename)
+            //let tempStrHitory:NSString = (strHistory as? NSString)!
+            //let strHistoryFilename:NSString = tempStrHitory.components(separatedBy: "/")[tempStrHitory.components(separatedBy: "/").count-1] as NSString
+            //Swift.print(strHistoryFilename)
             let menuItem = NSMenuItem(title: strHistory as! String, action: #selector(callInitManga(sender:)), keyEquivalent: "")
             menuForParent.addItem(menuItem)
         }
         menuHistory.submenu = menuForParent
+        createFolderFilesMenu()
     }
     
+    func createFolderFilesMenu() {
+        let menuForParent = NSMenu()
+        let strArryHistory = UserDefaults.standard.array(forKey: "history")
+        //ここでnilを弾かないと初期値が履歴が無い場合にエラーが出るので対処。
+        if(strArryHistory == nil){
+            menuHistory.submenu = menuForParent
+            return
+        }
+        //履歴から最新のファイルPATHを取得する。
+        //ファイル名部分だけ除去する方法が分からなかったので、
+        //一旦ファイルPAHTをばらして配列に格納。
+        //最後の要素（ファイル名）だけを除いたファイルPATH（＝フォルダPATH）として再結合する。
+        let strLastRecentFile = strArryHistory?.last
+        let urlLastRecentFile = URL(fileURLWithPath: strLastRecentFile as! String)
+        let arrUrlLastRecentFile = urlLastRecentFile.pathComponents
+        var strLastRecentFolder = ""
+        for i in 1..<arrUrlLastRecentFile.count - 1 {
+            strLastRecentFolder = strLastRecentFolder + "/" + arrUrlLastRecentFile[i]
+        }
+        //フォルダPATHからfilemanagerでフォルダ内のファイル名を取得する。
+        //フィルター機能でzip,pdf,rar以外は除く。
+        var fmRecentFolderFiles: [String] = []
+        var filteredRecentFolderFiles: [String] = []
+        let fileManager = FileManager.default
+        do {
+            fmRecentFolderFiles = try fileManager.contentsOfDirectory(atPath: strLastRecentFolder)
+        } catch {
+        }
+        filteredRecentFolderFiles = fmRecentFolderFiles.filter {($0.contains(".pdf") || $0.contains(".rar") || $0.contains(".zip")) && !$0.contains("__MACOSX/")}
+        
+        //フィルターを掛けた後のファイル名一覧とフォルダPATHからフルPATHを生成
+        //menuに追加して、submenuに追加。
+        for tempFolderFile in filteredRecentFolderFiles {
+            let tempFile = strLastRecentFolder + "/" + tempFolderFile
+            let menuItem = NSMenuItem(title: tempFile, action: #selector(callInitManga(sender:)), keyEquivalent: "")
+            menuForParent.addItem(menuItem)
+        }
+        menuFolderFiles.submenu = menuForParent
+    }
+
     @objc func callInitManga(sender: NSMenuItem) {
         let pathFile = sender.title
         Swift.print(pathFile)
@@ -95,7 +141,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         switch ret {
         case .alertFirstButtonReturn:
             UserDefaults.standard.set(input.stringValue, forKey: "unarchPath")
-            pathDirUnarc = input.stringValue
+            pathDirUnarch = input.stringValue
             print(input.stringValue)
         case .alertSecondButtonReturn:
             UserDefaults.standard.removeObject(forKey: "unarchPath")

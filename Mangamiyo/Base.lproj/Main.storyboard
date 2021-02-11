@@ -76,11 +76,21 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="oas-Oc-fiZ">
                                                 <items>
-                                                    <menuItem title="Clear Menu" id="vNY-rz-j42">
+                                                    <menuItem title="No Item" id="vNY-rz-j42">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="clearRecentDocuments:" target="Ady-hI-5gd" id="Daa-9d-B3U"/>
                                                         </connections>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
+                                        </menuItem>
+                                        <menuItem title="Folder File List" id="fPu-yX-tSj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <menu key="submenu" title="Folder File List" id="2lQ-4P-17y">
+                                                <items>
+                                                    <menuItem title="No Item" state="on" id="bfB-In-Et4">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
                                                 </items>
                                             </menu>
@@ -167,6 +177,7 @@
                 </application>
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Mangamiyo" customModuleProvider="target">
                     <connections>
+                        <outlet property="menuFolderFiles" destination="fPu-yX-tSj" id="8Ya-XI-k7H"/>
                         <outlet property="menuHistory" destination="tXI-mr-wws" id="mZa-cu-ean"/>
                     </connections>
                 </customObject>

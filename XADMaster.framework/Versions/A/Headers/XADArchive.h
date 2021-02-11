@@ -141,6 +141,7 @@ extern NSString *XADFinderFlags;
 -(BOOL)extractTo:(NSString *)destination subArchives:(BOOL)sub;
 -(BOOL)extractEntries:(NSIndexSet *)entryset to:(NSString *)destination;
 -(BOOL)extractEntries:(NSIndexSet *)entryset to:(NSString *)destination subArchives:(BOOL)sub;
+-(BOOL)extractEntriesActually:(NSArray *)entryset to:(NSString *)destination subArchives:(BOOL)sub;
 -(BOOL)extractEntry:(int)n to:(NSString *)destination;
 -(BOOL)extractEntry:(int)n to:(NSString *)destination deferDirectories:(BOOL)defer;
 -(BOOL)extractEntry:(int)n to:(NSString *)destination deferDirectories:(BOOL)defer

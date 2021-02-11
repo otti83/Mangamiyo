@@ -29,8 +29,8 @@ class ViewController: NSViewController {
         }
         //UserDefaultsを利用して初期化や解凍先の設定。
         let DocumentsPath = NSHomeDirectory() + "/tmp/Mangamiiyo/works/"
-        pathDirUnarc = UserDefaults.standard.string(forKey: "unarchPath") ?? DocumentsPath
-        Swift.print(DocumentsPath, pathDirUnarc)
+        pathDirUnarch = UserDefaults.standard.string(forKey: "unarchPath") ?? DocumentsPath
+        Swift.print(DocumentsPath, pathDirUnarch)
         
         numShowTimer = UserDefaults.standard.double(forKey: "strShowTime")
         openRight = UserDefaults.standard.bool(forKey: "openRight")
@@ -139,11 +139,13 @@ override var acceptsFirstResponder: Bool {
         if (strArrHistory == nil) {
             strArrHistory = []
         }
+        var count = 0;
         for strHistory in strArrHistory! {
             if((strHistory as! NSString).isEqual(to: pathFile)) {
                 Swift.print("Exist path.")
-                return
+                strArrHistory?.remove(at: count)
             }
+            count += 1
         }
         strArrHistory?.append(pathFile)
         defaults.set(strArrHistory, forKey:"history")
@@ -167,13 +169,15 @@ override var acceptsFirstResponder: Bool {
             mangaIndex = 0
         }
 
+        let queueUnarch = DispatchQueue.global()
         let groupUnarch = DispatchGroup()
-        let queueUnarch = DispatchQueue(label: "unarchive")
+        //queueUnarch = DispatchQueue(label: "unarchive")
         
         timerList = Timer.scheduledTimer(withTimeInterval: numDirMonitor, repeats: true, block: { (timer) in
             Swift.print("timer")
             Unarchive().listedFiles()
             self.initManga()
+            
         })
         
         queueUnarch.async(group: groupUnarch) {
@@ -195,13 +199,14 @@ override var acceptsFirstResponder: Bool {
     //最終的なファイル一覧のグローバル変数を生成する（pathManagaFiles）
     func initManga (){
         pathManagaFiles = mangaFiles.filter {($0.contains(".jpg") || $0.contains(".jpeg") || $0.contains(".gif") || $0.contains(".png") || $0.contains(".bmp")) && !$0.contains("__MACOSX/")}
-        Swift.print("Befora sort: ", pathManagaFiles)
+        //Swift.print("Befora sort: ", pathManagaFiles)
         pathManagaFiles = pathManagaFiles.sorted{$0.localizedStandardCompare($1) == ComparisonResult.orderedAscending
         }
-        Swift.print("After sort: ", pathManagaFiles)
+        //Swift.print("After sort: ", pathManagaFiles)
         var i = 0;
         for path in pathManagaFiles{
-            pathManagaFiles[i] = Unarchive().tempUnarc.appending(path)
+            pathManagaFiles[i] = pathDirUnarch.appending(path)
+            //Swift.print("Image Path: ", pathManagaFiles[i])
             i += 1
         }
         imageView.image = nil
@@ -222,11 +227,11 @@ override var acceptsFirstResponder: Bool {
         if(openRight) {
             pageSlider.intValue = -Int32(mangaIndex)
             pageSlider.maxValue = 0
-            pageSlider.minValue = -Double(pathManagaFiles.count)
+            pageSlider.minValue = -Double(pathManagaFiles.count) + 1
             Swift.print("Page Slider: ", pageSlider.maxValue, pageSlider.intValue)
         }else{
             pageSlider.intValue = Int32(mangaIndex)
-            pageSlider.maxValue = Double(pathManagaFiles.count)
+            pageSlider.maxValue = Double(pathManagaFiles.count) - 1
             pageSlider.minValue = 0
             Swift.print("Page Slider: ", pageSlider.maxValue, pageSlider.intValue)
         }
